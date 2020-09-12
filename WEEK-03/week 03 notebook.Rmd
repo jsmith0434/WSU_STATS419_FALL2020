@@ -1,5 +1,5 @@
 ---
-title: "R Notebook"
+title: 'R Notebook sandbox: Assignment "Datasets"  (10  points)'
 output: html_notebook
 ---
 
@@ -8,7 +8,11 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
 
 ```{r}
-plot(cars)
+library(devtools)
+local_path = "C:/Users/jsmit/Desktop/WSU/DataAnalytics/STAT419/WSU_STATS419_FALL2020/"
+source(paste0(local_path,"functions/libraries.R"))
+#source("C:/Users/jsmit/Desktop/WSU/DataAnalytics/STAT419/WSU_STATS419_FALL2020/functions/libraries.R")
+
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
