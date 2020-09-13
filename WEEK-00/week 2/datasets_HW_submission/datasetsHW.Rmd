@@ -10,8 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-Jessica Smith  
-11602418  
+Jessica Smith   
 STATS 419  
 Monte J. Shaffer   
 9/5/2020  
