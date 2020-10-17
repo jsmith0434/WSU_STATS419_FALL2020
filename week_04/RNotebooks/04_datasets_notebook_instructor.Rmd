@@ -1,7 +1,16 @@
 ---
-title: 'R Notebook sandbox: Assignment "Datasets" (10 points) Revisited'
 output:
-  html_document:
+  pdf_document: default
+  html_document: default
+---
+---
+title: "Week 03 Assignment"
+author: "Jessica Smith"
+email: "jessica.legarza@wsu.edu"
+course: "STATS 419 Survey of Multivariate Analysis"
+instructor: "Monte J. Shaffer"
+data: "r format(Sys.time(), '%d %B %Y')"
+output: pdf_document
     df_print: paged
     toc: true
     toc_float: true
@@ -9,7 +18,7 @@ output:
     fig_caption: true
     number_sections: true
 my-var: "monte"  # https://bookdown.org/yihui/rmarkdown/html-document.html
----
+
 
 
 

@@ -1,0 +1,83 @@
+---
+title: 'Notebook for Project 01'
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    fig_caption: true
+    number_sections: true
+my-var: "monte"  # https://bookdown.org/yihui/rmarkdown/html-document.html
+---
+
+You will need to populate this notebook based on the idea of "zero to hero" discussed as Data Provenance.
+
+"exploratory data analysis" We try to visualize the data and articulate some initial findings.
+```{r}
+#read in the data
+
+```
+
+```{r}
+#clean up the data
+```
+
+```{r}
+#plot histogram. #Use function normalDiagnosticPlot(data) from 06_correlation_notebook_instructor
+
+
+
+```
+
+```{r}
+#possible ideas
+
+#Think about whether samples dependent or independent? I think samples are independent, but measurements within a sample would be dependent.  But maybe since there are family members, this isn't true?
+
+#Compare means of two independent samples (male versus female?) #t.test(data1, data2, paired=FALSE, var.equal=FALSE); # Are we assuming equal or unequal variance? Use a different method depending on each.
+
+```
+
+
+```{r}
+#review the correlations of various components of the body. 
+
+#Correlation is a technique for investigating the relationship between two quantitative, continuous variables, for example, age and blood pressure. Pearson's correlation coefficient (r) is a measure of the strength of the association between the two variables.
+
+#cor.test(x.0.1, y.0.1.max, method="pearson");  # default
+
+#plot correlation
+#corrplot::corrplot( (cor(iris.df)) ); 
+
+```
+
+```{r}
+#Create a dendrogram/ evaluate clustering?
+#dist(x)  Creates a distance function
+#hclust creates a dendrogram.
+#consider whether the data should be scaled scale(data)
+#library(pvclust);  # install.packages("pvclust", dependencies=TRUE); #draws boxes around the clusters.  Gives fewer clusters than hclust
+#pvclust uses "bootstrapping" to analyze the stability of the hclust.  For some reason, you have to transpose the data inputs.
+```
+
+You need to formulate some initial Research Questions that would interest you.  The power of "one" suggests there is an overall research question that may have sub-questions.
+
+- e.g., Body Proportions and Artistic Renderings
+- e.g., NBA Basketball Players vs Our Sample
+- e.g., Studies of Covariates on various aspects of the body measurements
+
+Notice the above are three example topics to be discovered, not an actual research question with sub-questions.  Given the data (and possibly external auxiliary data), what would you enjoy researching?  What would you find intriguing?
+
+
+
+[+5 EASTER]  Using RGL or some other 3-D plotting tool, build a stick-figure based on your individual body measurements.  We assume the x-axis starts at the center of the eyes and moves laterally: looking right to the end of your outstretched fingertips is one direction; looking left to the end of your outstretched fingertips in another direction.  The y-axis would be the vertical axis from your feet to your head.  The z-axis would be forward-backward with zero being directly between your two feet (placed 'arm-pit' width apart), half of your shoe size being in the positive direction, the other half in the negative direction.  We could imaging z=0 running directly through your body (kinda like your spine and through your head).  Use line segments to connect parts, and a large point (or circle) where segments connect.  Use a rectangularish-shape for the head if a 3-D ellipsoid is too difficult).
+
+https://en.wikipedia.org/wiki/Anatomical_terms_of_location
+
+- x: lateral (right/left)
+- y: superior/inferior
+- z: anterior/posterior
+
+
+

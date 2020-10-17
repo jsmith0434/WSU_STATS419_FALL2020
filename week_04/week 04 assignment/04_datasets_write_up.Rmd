@@ -6,7 +6,6 @@ course: "STATS 419 Survey of Multivariate Analysis"
 instructor: "Monte J. Shaffer"
 data: "r format(Sys.time(), '%d %B %Y')"
 output: pdf_document
-my-var: "monte"  # https://bookdown.org/yihui/rmarkdown/html-document.html
 ---
 
 
@@ -60,7 +59,7 @@ rotateMatrix270(myMatrix);
 
 
 # IRIS
-Recreate the graphic for the IRIS Data Set using R.  Same titles, same scales, same colors.  See: \url{https://en.wikipedia.org/wiki/Iris_flower_data_set#/media/File:Iris_dataset_scatterplot.svg}
+Recreate the graphic for the IRIS Data Set using R.  Same titles, same scales, same colors.  
 
 ```{r,mychunk-iris, fig.width = 5, fig.height = 5}
 
@@ -193,7 +192,7 @@ denzel = grabFilmsForPerson(nmid);
 
 ```
 
-Compare Will Smith and Denzel Washington. [See 03_n greater 1-v2.txt for the necessary functions and will-vs-denzel.txt for some sample code and in DROPBOX: \__student_access__\unit_01_exploratory_data_analysis\week_02\imdb-example ]  You will have to create a new variable $millions.2000 that converts each movie's $millions based on the $year of the movie, so all dollars are in the same time frame.  You will need inflation data from about 1980-2020 to make this work.
+Compare Will Smith and Denzel Washington. [See 03_n greater 1-v2.txt for the necessary functions and will-vs-denzel.txt for some sample code and in DROPBOX. You will have to create a new variable $millions.2000 that converts each movie's $millions based on the $year of the movie, so all dollars are in the same time frame.  You will need inflation data from about 1980-2020 to make this work.
 
 
 ## BoxPlot of Top-50 movies using Raw Dollars

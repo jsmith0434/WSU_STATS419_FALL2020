@@ -1,13 +1,19 @@
 ---
-title: "Week 03 Assignment/ Week 04 Resubmission"
-author: "Jessica Smith"
-email: "jessica.legarza@wsu.edu"
-course: "STATS 419 Survey of Multivariate Analysis"
-instructor: "Monte J. Shaffer"
-data: "r format(Sys.time(), '%d %B %Y')"
-output: pdf_document
+title: 'R Notebook sandbox: Assignment "Datasets" (10 points) Revisited'
+author: 'Jessica Smith'
+date: '9/19/2020'
+instructor: 'Monte Shaffer'
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    fig_caption: true
+    number_sections: true
 my-var: "monte"  # https://bookdown.org/yihui/rmarkdown/html-document.html
 ---
+
 
 
 ```{r,mychunk-common-include,message=FALSE, warning=FALSE}
