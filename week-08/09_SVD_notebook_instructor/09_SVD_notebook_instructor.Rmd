@@ -398,7 +398,6 @@ colnames(my.times) = c("n", "m", "rmvn", "cov", "xxt", "pca", "svd.slow", "svd.f
 my.times = as.data.frame(my.times);
 
 my.times;
-
 ```
 
 ### Summary of Speed Test

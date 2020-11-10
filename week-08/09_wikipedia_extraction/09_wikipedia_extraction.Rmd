@@ -93,7 +93,7 @@ We need a location to store our data (page.html).  I will create folder name, ba
 
 ```{r, chunck-prep-data-storage}
 
-local.data.path = "R:/";  # to store HTML files, cached data-objects
+local.data.path = "C:/Users/jsmit/Desktop/WSU/DataAnalytics/STAT419/myData/";  # to store HTML files, cached data-objects
       # I generally use large drives because they fill up
       # Having the C:/ run out can be bad 
       # Today's project [~6MB zipped]
@@ -119,7 +119,7 @@ wiki.info = wiki.downloadWikiPage(wiki.url, path.wiki);
 ## Let's do some parsing
 
 ```{r, chunck-first-example-parser}
-
+library(rvest)
 latlong = wiki.findCoordinates(wiki.info$path.wiki.page, wiki.info$wiki.html); 
     latlong;
 population = wiki.historicalPopulation(wiki.info$path.wiki.page, wiki.info$wiki.html);
@@ -450,25 +450,25 @@ str(capitals);  # have some "strings" that should be numbers ...
 
 
 # ### if cached, these variables get renamed on loading ...
-capitals$`Capital Since` = as.numeric(capitals$`Capital Since`);  # RStudio auto-complete is nice here
-capitals$`Area (mi2)` = as.numeric(capitals$`Area (mi2)`);
-capitals$`Rank in State  (city proper)` = as.numeric(capitals$`Rank in State  (city proper)`);
+#capitals$`Capital Since` = as.numeric(capitals$`Capital Since`);  # RStudio auto-complete is nice here
+#capitals$`Area (mi2)` = as.numeric(capitals$`Area (mi2)`);
+#capitals$`Rank in State  (city proper)` = as.numeric(capitals$`Rank in State  (city proper)`);
 
 ## if cached, these variables get renamed on loading ...
-# capitals$`Capital.Since` = as.numeric(capitals$`Capital.Since`);
-# capitals$`Area..mi2.` = as.numeric(capitals$`Area..mi2.`);
-# capitals$`Rank.in.State...city.proper.` = as.numeric(capitals$`Rank.in.State...city.proper.`);
+capitals$`Capital.Since` = as.numeric(capitals$`Capital.Since`);
+capitals$`Area..mi2.` = as.numeric(capitals$`Area..mi2.`);
+capitals$`Rank.in.State...city.proper.` = as.numeric(capitals$`Rank.in.State...city.proper.`);
 
 str(capitals);
 # 
-capitals$`Population (2019 est.)` = wiki.cleanupNumericVectors(capitals$`Population (2019 est.)`);
-capitals$`MSA/µSA Population  (2019 est.)` = wiki.cleanupNumericVectors(capitals$`MSA/µSA Population  (2019 est.)`);
-capitals$`CSA Population  (2019 est.)` = wiki.cleanupNumericVectors(capitals$`CSA Population  (2019 est.)`);
+#capitals$`Population (2019 est.)` = wiki.cleanupNumericVectors(capitals$`Population (2019 est.)`);
+#capitals$`MSA/µSA Population  (2019 est.)` = wiki.cleanupNumericVectors(capitals$`MSA/µSA Population  (2019 est.)`);
+#capitals$`CSA Population  (2019 est.)` = wiki.cleanupNumericVectors(capitals$`CSA Population  (2019 est.)`);
 
 
-# capitals$`Population..2019.est..` = wiki.cleanupNumericVectors(capitals$`Population..2019.est..`);
-# capitals$`MSA.µSA.Population...2019.est..` = wiki.cleanupNumericVectors(capitals$`MSA.µSA.Population...2019.est..`);
-# capitals$`CSA.Population...2019.est..` = wiki.cleanupNumericVectors(capitals$`CSA.Population...2019.est..`);
+capitals$`Population..2019.est..` = wiki.cleanupNumericVectors(capitals$`Population..2019.est..`);
+capitals$`MSA.µSA.Population...2019.est..` = wiki.cleanupNumericVectors(capitals$`MSA.µSA.Population...2019.est..`);
+capitals$`CSA.Population...2019.est..` = wiki.cleanupNumericVectors(capitals$`CSA.Population...2019.est..`);
 
 
 str(capitals);

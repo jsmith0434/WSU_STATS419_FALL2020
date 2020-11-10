@@ -1,0 +1,343 @@
+---
+output:
+  pdf_document:
+    keep_tex: true
+    fig_caption: true
+    toc: true
+    toc_depth: 3 
+    number_sections: true
+    citation_package: natbib
+    latex_engine: pdflatex
+    template: ./report.tex
+  html_document:
+    df_print: paged
+    
+title: "Loomis Ideal Body Proportions"
+subtitle: "An investigation of the artistic ideal versus actual body proportions "
+author: 
+- name: "Jessica Smith"
+  affiliation: "Washington State University"
+keywords: |
+    Andrew Loomis, Correlation
+abstract: |
+  In this article we compare the ideal body proportions characterized by Andrew Loomis \citep{Loomis:1943} to a sample of 223 adults collected by WSU sudents. Loomis proposed that the total height of the ideal human body should be 8 times the height of the head for both men and women. To test the validity of this claim,  a data set was used that was collected by students as part of a course project. The students prepared a handout and requested information such as eyecolor, gender, dominant hand, and various numeric measurements of different body parts. Submissions were aggregated and screened to remove poor quality and potentially fabricated entries. The data was explored to determine if the observed head height to total body height ratios were in agreement with the idealized proportions proposed by Loomis. Variations based on gender were also explored, and other general proportional "rules" were also investigated. The results showed low positive correlation between head height and overall body height. Additionally, the standard deviation from the ideal proportion proposed by Loomis was found to be +/- 10% for 68% of respondents. A general "rule" was uncovered that the height from the floor to armpit is strongly correlated with the total height, however, this is not surprising. No other significant "rules" were found from exploring the data.
+
+sectionnumberdepth: 3
+titleEndnotes: "ENDNOTES"
+titleReferences: "REFERENCES"
+columnsReferences: 2
+titleTOC:  "TABLE OF CONTENTS"
+bibliography: ./biblio/master.bib
+bibliostyle: ./biblio/ormsv080.bst
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\section{Introduction}
+\label{sec:intro}
+
+Andrew Loomis was a well known and influential art instructor in the mid 20th century who authored a series of drawing manuals describing how to accurately depict the human body. These manuals are still being published over 80 years later and are widely considered to be the penultimate guide to figure drawing\citep{harris2000andrew}. In his iconic work "Figure Drawing For All It's Worth", he describes the artistic ideal male and female proportions (Fig. 1).    
+
+
+
+\begin{figure}[!ht]
+    \begin{subfigure}[h]{0.5\textwidth}
+    \centering
+    %  trim={<left> <lower> <right> <upper>}
+    % https://shantoroy.com/latex/add-subfig-in-latex/
+            \includegraphics[trim = 0 0 0 0,clip,scale=1]{figures/Loomis1.pdf}
+        \caption{ \citet{harris2000andrew} discuss this. }
+        \label{fig:sub-first}
+    \end{subfigure}
+    \begin{subfigure}[h]{0.5\textwidth}
+    \centering
+        \includegraphics[trim = 0 0 0 0,clip,scale=1]{figures/Loomis2.pdf}
+            \caption{\citep{harris2000andrew}}
+        \label{fig:sub-second}
+    \end{subfigure}
+    \vspace{2.5mm}
+    \hrule
+    \vspace{2.5mm}
+        \caption{\textbf{ Andrew Loomis's guide to drawing the human body, showing total height as 8 units of the individual's head height for both men and women. \newline
+        \newline     }
+        \label{fig:combined}
+    \vspace{-2.5mm}
+    \hrule
+\end{figure}
+
+
+Loomis proposed that to draw a male or female subject accurately, the artist should divide the figure into 8 sections. The section height should be the length of the individuals head, and that length should correspond to roughly 1/8th of the entire length of the body.
+
+\section{Primary research question}
+\label{sec:rq}
+
+Were the idealized body proportions proposed by Loomis accurate?
+
+\subsection{Secondary question}
+\label{sec:rq2}
+ 
+Do these proportions hold true for both male and female populations?
+
+\subsection{Tertiary question}
+\label{sec:rq3}
+
+Are there other proportion "rules" that can be inferred from the data?
+
+
+\section{Data Description}
+\label{sec:data}
+
+Data was collected from WSU students as part of a course in Multivariate Statistics. Each student was responsible for submitting body measurements and metadata from 10 unique people. Students created a hand out and requested measurements of different body parts from both the left and right hand sides, as well as categorical data regarding eye color, dominant writing hand, ethnicity, and other covariates. The student data submissions were aggregated and then anonymized and screened for duplicate or low-integrity entries. The initial dataset of 428 samples was reduced to 251 individuals ranging in age from 1 to 94 years old. Since body proportions change from juveniles through adulthood, the data set was further constrained to include only adults 18 years of age or older, leaving a pool of 223 individuals. Loomis maintained that the same ratio applied to both males and females, so subjects from both genders were considered.
+
+Participants were expected to measure themselves and were asked to rate the quality their measurements. While both left and right sides body parts were requested, the difference in recorded length attributable to asymmetry was considered to be less than the measurement error. Therefore, the average of both sides was calculated and submitted. 
+
+\subsection{Summary of Sample}
+\label{sec:data-sample}
+
+Approximately 47% or respondents were female, 53% were male, and less than 1% identified as non binary. The average age of the study participants was 37, while the median age was 29. The ethnicity of the participants surveyed was 73.5% Caucasian, 17% Asian, 3.1% Hispanic, 1.3% African American, 3.1% mixed race, and 1.8% were members of other races.
+
+\subsection{Summary Statistics of Data}
+\label{sec:data-summary}
+
+A Kaiser-Meyer-Olkin (KMO) Test was performed and confirmed the data was suitable for factor analysis. The data was then scaled and a correlation table was prepared to for total height and head height (Table 1).  A correlation table showing all the measurements was also prepared and has been included in the Appendix.
+
+\input{tables/height-head-correlation-table.tex}
+
+
+\section{Key Findings}
+\label{sec:findings}
+
+Height was found to have a strong positive correlation with the armpit to floor measurement (Appendix: Table 1). Head height and overall height, however, were not shown to have a strong correlation (Table 1). To further investigate the accuracy of Loomis's ideal body proportions, each individual survey respondents height was divided by 8, and that number was compared to the actual head height measurement. The 1/8th total height approximation for head height was found to have one standard deviation equal to +/- 10% for the data for both genders. When each gender was examined separately, the standard deviation for males was 10.16092% and for females was found to be 10.84867%, showing females have a slightly wider variation from the mean than males.  
+
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+
+While Loomis's ideal body proportions may form a useful baseline for drawing the human body, our study showed that the participants in the sample population did not to conform to the idealized standard. This finding was shown to hold true regardless of gender, as neither gender appears to closely conform to the standard proportions proposed by Loomis. From analysis of the correlation table, other proportional "rules" that could be inferred follow intuitive logic. For example, total height was shown to be strongly correlated with the floor to armpit measurement. Foot length, floor to knee distance, floor to hip, and lower arm length showed a moderate positive correlation. 
+
+
+
+
+\newpage
+\section{APPENDICES}
+\label{sec:appendix}
+
+
+\subsection{Data Provenance}
+\label{sec:appendix-data-provenance}
+
+\newpage
+\subsubsection{Data Collection Handout}
+\label{sec:appendix-data-handout}
+
+\begin{figure}[!ht]
+	\hrule
+	\caption{ \textbf{Handout Page 1} }
+	\begin{center}
+	    \scalebox{1.00}{	\includegraphics[trim = 0 0 0 0,clip,width=0.85\textwidth]{pdfs/handout1.pdf} }
+	\end{center}
+	\label{fig:handout-1}
+	\hrule
+\end{figure}
+
+
+\newpage
+
+\begin{figure}[!ht]
+	\hrule
+	\caption{ \textbf{Handout Page 2} }
+	\begin{center}
+	    \scalebox{1.00}{	\includegraphics[trim = 0 0 0 0,clip,width=0.85\textwidth]{pdfs/handout2.pdf} }
+	\end{center}
+	\label{fig:handout-2}
+	\hrule
+\end{figure}
+
+\newpage
+
+
+\begin{figure}[!ht]
+    \begin{subfigure}[h]{0.5\textwidth}
+    \centering
+    %  trim={<left> <lower> <right> <upper>}
+    % https://shantoroy.com/latex/add-subfig-in-latex/
+            \includegraphics[trim = 0 0 0 0,clip,scale=1]{figures/Loomis1.pdf}
+        \caption{ \citet{Thomas:2020} discuss this. }
+        \label{fig:sub-first}
+    \end{subfigure}
+    \begin{subfigure}[h]{0.5\textwidth}
+    \centering
+        \includegraphics[trim = 0 0 0 0,clip,scale=1]{figures/Loomis2.pdf}
+            \caption{Schnitt realer Sensor \citep{Thomas:2020}}
+        \label{fig:sub-second}
+    \end{subfigure}
+    \vspace{2.5mm}
+    \hrule
+    \vspace{2.5mm}
+        \caption{\textbf{ Der Sensor in Theorie und Verwirklichung... caption at bottom instead? }  I can write a really long caption if I want. \newline This is using "crop" to include one image and trim it to appear as two.  Likely you will have two separate images if you use this option, so you would set the trim parameters all equal to 0.  \newline   This figure has subfigures which each also have a possible caption.   }
+        \label{fig:combined}
+    \vspace{-2.5mm}
+    \hrule
+\end{figure}
+
+\newpage
+\subsubsection{Full Correlation Table}
+\label{sec:appendix-corr-table}
+
+\begin{figure}[!ht]
+	\hrule
+	\caption{ \textbf{Correlation Table} }
+	\begin{center}
+	    \scalebox{1.00}{	\includegraphics[trim = 0 0 0 0,clip,width=0.85\textwidth]{pdfs/Corr_table_large.pdf} }
+	\end{center}
+	\label{fig:correlation}
+	\hrule
+\end{figure}
+
+
+\newpage
+
+\newpage
+
+\subsection{Preparing the Report Workspace as a subsection}
+\label{sec:appendix-setup}
+
+\subsubsection{Preparing the Report Workspace as a subsubsection}
+\label{sec:appendix-setup2}
+
+\paragraph{Preparing the Report Workspace as a paragraph}
+\label{sec:appendix-setup3}
+
+\subparagraph{Preparing the Report Workspace as a subparagrah}
+\label{sec:appendix-setup4}
+
+Below is the necessary functions and libraries required to run the code referenced in this document.
+
+```{r,appendix-setup,message=FALSE}
+library(devtools);       # required for source_url
+
+path.humanVerseWSU = "https://raw.githubusercontent.com/MonteShaffer/humanVerseWSU/"
+source_url( paste0(path.humanVerseWSU,"master/misc/functions-project-measure.R") );
+
+```
+
+Below is the code to load the data and prepare it for analysis.
+
+```{r,appendix-secret,message=FALSE}
+
+path.project = "C:\\Users\\jsmit\\Desktop\\WSU\\DataAnalytics\\STAT419\\WSU_STATS419_FALL2020\\project-measure\\";
+
+
+path.to.secret = "C:\\Users\\jsmit\\Desktop\\WSU\\DataAnalytics\\STAT419\\_SECRET_\\";
+
+measure = utils::read.csv( paste0(path.to.secret, "measure-students.txt"), header=TRUE, quote="", sep="|");
+
+path.github = "https://github.com/jsmith0434/WSU_STATS419_FALL2020";
+source_url( paste0(path.github,"/functions/functions-project-measure.R") );
+
+measure_data = utils::read.csv( paste0(path.to.secret, "final.measure.txt"), header=TRUE, quote="", sep="|");
+measure_cleaned = cleanUpData(measure_data)
+
+adults = measure_cleaned[measure_cleaned$age >= 18, ]
+
+```
+
+
+Below is the code to generate the summary statistics and save them as a table that you see in Section \ref{}.
+
+```{r,appendix-summary,message=FALSE, eval=FALSE}
+
+
+path.humanVerseWSU = "https://raw.githubusercontent.com/MonteShaffer/humanVerseWSU/"
+source_url( paste0(path.humanVerseWSU,"master/misc/functions-project-measure.R") );
+
+path.project = "C:\\Users\\jsmit\\Desktop\\WSU\\DataAnalytics\\STAT419\\WSU_STATS419_FALL2020\\project-measure\\";
+path.tables = paste0(path.project,"tables\\");
+
+file.correlation = paste0(path.tables,"height-head-correlation-table.tex");
+
+myData = as.matrix(adults[, 3:4]);  # numeric values only, only what will appear in table
+myData = scale(myData)
+myData = cbind(myData,myData);
+
+buildLatexCorrelationTable(myData, 
+  rotateTable = FALSE,
+  width.table = 01.1,
+  myFile = file.correlation,
+  myNames = c("Total Height (in)", "Head Height (in)", "Total Height (in)", "Head Height (in") );
+
+Sys.sleep(2); # in case Knit-PDF doesn't like that I just created the file...
+
+myData2 = as.matrix(sub2)
+
+file.correlation = paste0(path.tables,"scaled-correlation-table.tex");
+
+buildLatexCorrelationTable(myData2, 
+  rotateTable = TRUE,
+  width.table = 1.6,
+  myFile = file.correlation,
+  myNames = c(colnames(sub2), colnames(sub2))
+)
+
+
+```
+
+```{r}
+mytable2 <- table(adults$gender)
+lbls <- paste(names(mytable2), ": ", mytable2, sep="")
+pie(mytable2, labels = lbls,  main="Respondent Gender")
+
+```
+
+```{r}
+mytable <- round(prop.table(table(adults$ethnicity))*100,1)
+lbls <- paste(names(mytable), ": ", mytable, sep="")
+pie(mytable, labels = lbls,   main="Respondent Ethicity")
+```
+
+
+```{r}
+sub = adults[, c("height", "head.height", "gender")]
+sub$eighth = sub$height/8 
+sub$percent_diff = ((sub$head.height - sub$eighth)/sub$head.height) * 100
+
+hist(sub$percent_diff[sub$gender=="female"])
+hist(sub$percent_diff[sub$gender=="male"])
+hist(sub$percent_diff)
+```
+
+```{r, eval = FALSE}
+
+sub2 = adults[ ,c(3,4,5,20:27)]
+sub2 = scale(sub2)
+sub2 = as.data.frame(sub2)
+
+# this is the standard correlation matrix
+sub2.corr = cor(sub2, use = "complete.obs");
+
+library(REdaS); # install.packages("REdaS", dependencies=TRUE);
+sub2.KMO = KMOS(sub2, use = "complete.obs");
+
+my.kmo = sub2.KMO$KMO;
+my.kmo
+
+```
+
+
+```{r,  eval = FALSE}
+myData2 = as.matrix(sub2)
+
+file.correlation = paste0(path.tables,"scaled-correlation-table.tex");
+
+buildLatexCorrelationTable(myData2, 
+  rotateTable = TRUE,
+  width.table = 1.6,
+  myFile = file.correlation,
+  myNames = c(colnames(sub2), colnames(sub2))
+)
+
+```

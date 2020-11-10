@@ -1,0 +1,217 @@
+---
+title: 'Notebook for Project 01'
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 4
+    fig_caption: true
+    number_sections: true
+my-var: "monte"  # https://bookdown.org/yihui/rmarkdown/html-document.html
+---
+
+You will need to populate this notebook based on the idea of "zero to hero" discussed as Data Provenance.
+
+"exploratory data analysis" We try to visualize the data and articulate some initial findings.
+```{r deprecated}
+#read in the original data
+library(devtools);
+path.github = "https://raw.githubusercontent.com/MonteShaffer/humanVerseWSU/master/";
+source_url ( paste0( path.github, "humanVerseWSU/R/functions-file.R" ) );
+
+path.to.secret = "C:\\Users\\jsmit\\Desktop\\WSU\\DataAnalytics\\STAT419\\_SECRET_\\";
+
+measure1 = utils::read.csv( paste0(path.to.secret, "measure-students.txt"), header=TRUE, quote="", sep="|");
+
+measure1;
+unique(measure1$units)
+
+```
+
+```{r read_data}
+
+#read in the cleansed data
+library(devtools);
+path.github = "https://raw.githubusercontent.com/MonteShaffer/humanVerseWSU/master/";
+source_url ( paste0( path.github, "humanVerseWSU/R/functions-file.R" ) );
+
+path.to.secret = "C:\\Users\\jsmit\\Desktop\\WSU\\DataAnalytics\\STAT419\\_SECRET_\\";
+
+measure_data = utils::read.csv( paste0(path.to.secret, "final.measure.txt"), header=TRUE, quote="", sep="|");
+
+
+#measure_cleaned = ConvertCmToInches(measure)
+measure_cleaned = cleanUpData(measure_data)
+summary(measure_cleaned);
+```
+
+
+```{r}
+#possible ideas
+
+#Think about whether samples dependent or independent? I think samples are independent, but measurements within a sample would be dependent.  But maybe since there are family members, this isn't true?
+
+#Compare means of two independent samples (male versus female?) #t.test(data1, data2, paired=FALSE, var.equal=FALSE); # Are we assuming equal or unequal variance? Use a different method depending on each.
+
+#Analyze symmetry  Do men and women have different symmetry? DOes symmetry change with age? What factors predict dominant hand?  
+
+#Hypothesis: dominant eye, dominant swing, and dominant writing hand are all the same, and are independent of ethnicity, gender, and age.
+
+#is there a relationship between gender and brown eyes versus blue. Head heights for men versus women?
+
+#Relationship between head height to body height 1:8 for both men and women.
+#https://illustrationage.files.wordpress.com/2013/04/andrew-loomis-figure-drawing-for-all-its-worth.pdf
+
+# The one to 8 ratio is for adults, so remove samples wih age <18
+
+
+#Break into 2 dataframs, 1 man one woman
+adults = measure_cleaned[measure_cleaned$age >= 18, ]
+#male = measure_cleaned[measure_cleaned$gender=='male',]
+
+summary(adults)
+
+mytable2 <- table(adults$gender)
+lbls <- paste(names(mytable2), ": ", mytable2, sep="")
+pie(mytable2, labels = lbls,  main="Respondent Gender")
+#normalDiagnosticPlot(adults$age)
+summary(adults$age)
+
+```
+
+```{r}
+mytable <- round(prop.table(table(adults$ethnicity))*100,1)
+lbls <- paste(names(mytable), ": ", mytable, sep="")
+pie(mytable, labels = lbls,   main="Respondent Ethicity")
+
+```
+
+
+
+```{r}
+#normalDiagnosticPlot(adults$height)
+#normalDiagnosticPlot(adults$head.height)
+
+summary(adults$height[adults$gender=="female"])
+
+sub = adults[, c("height", "head.height", "gender")]
+sub$eighth = sub$height/8 
+sub$percent_diff = ((sub$head.height - sub$eighth)/sub$head.height) * 100
+sub
+
+hist(sub$percent_diff[sub$gender=="female"])
+hist(sub$percent_diff[sub$gender=="male"])
+hist(sub$percent_diff)
+sub_f = sub[sub$gender=="female", ]
+sub_m = sub[sub$gender=="male", ]
+summary(sub_f)
+summary(sub_m)
+summary(sub$percent_diff)
+#normalDiagnosticPlot(sub$percent_diff)
+
+sd(sub$percent_diff, na.rm = TRUE)
+sd(sub$percent_diff[sub$gender=="male"], na.rm = TRUE)
+sd(sub$percent_diff[sub$gender=="female"], na.rm = TRUE)
+
+```
+
+```{r playing_with_data}
+
+cols = c(3,4,5,20:27)
+sub2 = adults[ ,cols]
+sub2 = scale(sub2)
+
+sub2 = as.data.frame(sub2)
+
+
+# this is the standard correlation matrix
+sub2.corr = cor(sub2, use = "complete.obs");
+
+#install.packages("KMO", dependencies=TRUE)
+#library(KMO); # install.packages("KMO", dependencies=TRUE);  # not available for R == 4.0.2
+#install.packages("REdaS", dependencies=TRUE);
+library(REdaS); # install.packages("REdaS", dependencies=TRUE);
+
+# https://www.rdocumentation.org/packages/REdaS/versions/0.9.3/topics/Kaiser-Meyer-Olkin-Statistics
+
+sub2.KMO = KMOS(sub2, use = "complete.obs");
+
+
+str(sub2.KMO);
+
+
+my.kmo = sub2.KMO$KMO;
+my.kmo;
+
+if(my.kmo >= 0.90)
+  {
+  print("marvelous!");
+  } else if(my.kmo >= 0.80)
+    {
+    print("meritorious!");
+    }  else if(my.kmo >= 0.70)
+        {
+        print("middling!");
+        } else if(my.kmo >= 0.60)
+            {
+            print("mediocre!");
+            }  else if(my.kmo >= 0.50)
+                {
+                print("miserable!");
+                } else { 
+                        print("mayhem!");
+                        print("Oh snap!"); 
+print("Kaiser-Meyer-Olkin (KMO) Test is a measure of how suited your data is for Factor Analysis. The test measures sampling adequacy for each variable in the model and for the complete model. The statistic is a measure of the proportion of variance among variables that might be common variance. The lower the proportion, the more suited your data is to Factor Analysis. <https://www.statisticshowto.com/kaiser-meyer-olkin/>");
+                }
+
+```
+
+```{r}
+#review the correlations of various components of the body. 
+
+#Correlation is a technique for investigating the relationship between two quantitative, continuous variables, for example, age and blood pressure. Pearson's correlation coefficient (r) is a measure of the strength of the association between the two variables.
+
+#cor.test(x.0.1, y.0.1.max, method="pearson");  # default
+
+#plot correlation
+#corrplot::corrplot( (cor(iris.df)) ); 
+
+```
+
+```{r}
+#Create a dendrogram/ evaluate clustering?
+#dist(x)  Creates a distance function
+#hclust creates a dendrogram.
+#consider whether the data should be scaled scale(data)
+#library(pvclust);  # install.packages("pvclust", dependencies=TRUE); #draws boxes around the clusters.  Gives fewer clusters than hclust
+#pvclust uses "bootstrapping" to analyze the stability of the hclust.  For some reason, you have to transpose the data inputs.
+#use ward.d2
+```
+
+```{r}
+#Kmeans clustering is faster than hclust.  See notes at the end of instructor notebook for ideas.
+```
+
+
+
+You need to formulate some initial Research Questions that would interest you.  The power of "one" suggests there is an overall research question that may have sub-questions.
+
+- e.g., Body Proportions and Artistic Renderings
+- e.g., NBA Basketball Players vs Our Sample
+- e.g., Studies of Covariates on various aspects of the body measurements
+
+Notice the above are three example topics to be discovered, not an actual research question with sub-questions.  Given the data (and possibly external auxiliary data), what would you enjoy researching?  What would you find intriguing?
+
+
+
+[+5 EASTER]  Using RGL or some other 3-D plotting tool, build a stick-figure based on your individual body measurements.  We assume the x-axis starts at the center of the eyes and moves laterally: looking right to the end of your outstretched fingertips is one direction; looking left to the end of your outstretched fingertips in another direction.  The y-axis would be the vertical axis from your feet to your head.  The z-axis would be forward-backward with zero being directly between your two feet (placed 'arm-pit' width apart), half of your shoe size being in the positive direction, the other half in the negative direction.  We could imaging z=0 running directly through your body (kinda like your spine and through your head).  Use line segments to connect parts, and a large point (or circle) where segments connect.  Use a rectangularish-shape for the head if a 3-D ellipsoid is too difficult).
+
+https://en.wikipedia.org/wiki/Anatomical_terms_of_location
+
+- x: lateral (right/left)
+- y: superior/inferior
+- z: anterior/posterior
+
+
+

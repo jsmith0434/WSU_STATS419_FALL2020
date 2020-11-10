@@ -122,7 +122,7 @@ Some call these "diagnostic tests"
 Xs.corr = cor(Xs);
 
 # library(KMO); # install.packages("KMO", dependencies=TRUE);  # not available for R == 4.0.2
-
+#install.packages("REdaS", dependencies=TRUE);
 library(REdaS); # install.packages("REdaS", dependencies=TRUE);
 
 # https://www.rdocumentation.org/packages/REdaS/versions/0.9.3/topics/Kaiser-Meyer-Olkin-Statistics
@@ -243,8 +243,9 @@ Xs.vss.dataframe;
 ```{r, chunck-nfactors-eigen}
 
 Xs.corr.eigen = eigen(Xs.corr);  
+install.packages("nFactors", dependencies=TRUE);
 
-library(nFactors);  # install.packages("nFactors", dependencies=TRUE);
+library(nFactors);  
 
 # Basic
 plotuScree(Xs.corr.eigen$values);
@@ -451,7 +452,7 @@ The objective is to assess how many factors to extra for the data.  Once determi
 Xs.self = Xs[,1:30];
 
 Xs.self;
-
+#install.packages("pvclust")
 
 library(devtools);
 source_url("https://raw.githubusercontent.com/MonteShaffer/humanVerseWSU/master/humanVerseWSU/R/functions-EDA.R");

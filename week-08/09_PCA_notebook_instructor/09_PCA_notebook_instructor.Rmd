@@ -88,7 +88,8 @@ If the variances would be equal, these ellipses would be circles.
 
 ```{r, chunk-pca-2d-ellipsis, cache.rebuild=TRUE}
 # cache.rebuild ... This will prevent Xs from being used from previous cache ...
- 
+
+#install.packages("mvnfast")
 library(mvnfast);
 source_url( paste0(path.github, "humanVerseWSU/R/functions-maths.R") );   # deg2rad
                                           # zeroIsh
