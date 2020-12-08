@@ -132,7 +132,7 @@ myData = cbind(myData,myData);
 # https://tex.stackexchange.com/questions/13460/scalebox-knowing-how-much-it-scales#13487
 buildLatexCorrelationTable(myData, 
   rotateTable = FALSE,
-  width.table = 01.1,
+  width.table = 0.8,
   myFile = file.correlation,
   myNames = c("Total Height (in)", "Head Height (in)", "Total Height (in)", "Head Height (in") );
 

@@ -23,9 +23,9 @@ abstract: |
   In this article we compare the ideal body proportions characterized by Andrew Loomis \citep{Loomis:1943} to a sample of 223 adults collected by WSU sudents. Loomis proposed that the total height of the ideal human body should be 8 times the height of the head for both men and women. To test the validity of this claim,  a data set was used that was collected by students as part of a course project. The students prepared a handout and requested information such as eyecolor, gender, dominant hand, and various numeric measurements of different body parts. Submissions were aggregated and screened to remove poor quality and potentially fabricated entries. The data was explored to determine if the observed head height to total body height ratios were in agreement with the idealized proportions proposed by Loomis. Variations based on gender were also explored, and other general proportional "rules" were also investigated. The results showed low positive correlation between head height and overall body height. Additionally, the standard deviation from the ideal proportion proposed by Loomis was found to be +/- 10% for 68% of respondents. A general "rule" was uncovered that the height from the floor to armpit is strongly correlated with the total height, however, this is not surprising. No other significant "rules" were found from exploring the data.
 
 sectionnumberdepth: 3
-titleEndnotes: "ENDNOTES"
+#titleEndnotes: "ENDNOTES"
 titleReferences: "REFERENCES"
-columnsReferences: 2
+columnsReferences: 1
 titleTOC:  "TABLE OF CONTENTS"
 bibliography: ./biblio/master.bib
 bibliostyle: ./biblio/ormsv080.bst
@@ -39,8 +39,7 @@ knitr::opts_chunk$set(echo = TRUE)
 \section{Introduction}
 \label{sec:intro}
 
-Andrew Loomis was a well known and influential art instructor in the mid 20th century who authored a series of drawing manuals describing how to accurately depict the human body. These manuals are still being published over 80 years later and are widely considered to be the penultimate guide to figure drawing\citep{harris2000andrew}. In his iconic work "Figure Drawing For All It's Worth", he describes the artistic ideal male and female proportions (Fig. 1).    
-
+Andrew Loomis was a well known and influential art instructor in the mid 20th century who authored a series of drawing manuals describing how to accurately depict the human body. These manuals are still being published over 80 years later and are widely considered to be the penultimate guide to figure drawing\citep{harris:2000}. In his iconic work "Figure Drawing For All It's Worth", he describes the artistic ideal male and female proportions (Fig. 1). Loomis proposed that to draw a male or female subject accurately, the artist should divide the figure into 8 sections. The section height should be the length of the individuals head, and that length should correspond to roughly 1/8th of the entire length of the body.
 
 
 \begin{figure}[!ht]
@@ -48,28 +47,26 @@ Andrew Loomis was a well known and influential art instructor in the mid 20th ce
     \centering
     %  trim={<left> <lower> <right> <upper>}
     % https://shantoroy.com/latex/add-subfig-in-latex/
-            \includegraphics[trim = 0 0 0 0,clip,scale=1]{figures/Loomis1.pdf}
-        \caption{ \citet{harris2000andrew} discuss this. }
+            \includegraphics{figures/Loomis1.pdf}
+        \caption{ \citet{harris:2000} }
         \label{fig:sub-first}
     \end{subfigure}
     \begin{subfigure}[h]{0.5\textwidth}
     \centering
-        \includegraphics[trim = 0 0 0 0,clip,scale=1]{figures/Loomis2.pdf}
-            \caption{\citep{harris2000andrew}}
+        \includegraphics{figures/Loomis2.pdf}
+            \caption{\citet{harris:2000}}
         \label{fig:sub-second}
     \end{subfigure}
     \vspace{2.5mm}
     \hrule
     \vspace{2.5mm}
-        \caption{\textbf{ Andrew Loomis's guide to drawing the human body, showing total height as 8 units of the individual's head height for both men and women. \newline
-        \newline     }
+        \caption{ }
         \label{fig:combined}
     \vspace{-2.5mm}
     \hrule
 \end{figure}
 
 
-Loomis proposed that to draw a male or female subject accurately, the artist should divide the figure into 8 sections. The section height should be the length of the individuals head, and that length should correspond to roughly 1/8th of the entire length of the body.
 
 \section{Primary research question}
 \label{sec:rq}
@@ -121,7 +118,6 @@ While Loomis's ideal body proportions may form a useful baseline for drawing the
 
 
 
-
 \newpage
 \section{APPENDICES}
 \label{sec:appendix}
@@ -160,29 +156,6 @@ While Loomis's ideal body proportions may form a useful baseline for drawing the
 \newpage
 
 
-\begin{figure}[!ht]
-    \begin{subfigure}[h]{0.5\textwidth}
-    \centering
-    %  trim={<left> <lower> <right> <upper>}
-    % https://shantoroy.com/latex/add-subfig-in-latex/
-            \includegraphics[trim = 0 0 0 0,clip,scale=1]{figures/Loomis1.pdf}
-        \caption{ \citet{Thomas:2020} discuss this. }
-        \label{fig:sub-first}
-    \end{subfigure}
-    \begin{subfigure}[h]{0.5\textwidth}
-    \centering
-        \includegraphics[trim = 0 0 0 0,clip,scale=1]{figures/Loomis2.pdf}
-            \caption{Schnitt realer Sensor \citep{Thomas:2020}}
-        \label{fig:sub-second}
-    \end{subfigure}
-    \vspace{2.5mm}
-    \hrule
-    \vspace{2.5mm}
-        \caption{\textbf{ Der Sensor in Theorie und Verwirklichung... caption at bottom instead? }  I can write a really long caption if I want. \newline This is using "crop" to include one image and trim it to appear as two.  Likely you will have two separate images if you use this option, so you would set the trim parameters all equal to 0.  \newline   This figure has subfigures which each also have a possible caption.   }
-        \label{fig:combined}
-    \vspace{-2.5mm}
-    \hrule
-\end{figure}
 
 \newpage
 \subsubsection{Full Correlation Table}
@@ -229,17 +202,20 @@ Below is the code to load the data and prepare it for analysis.
 
 ```{r,appendix-secret,message=FALSE}
 
-path.project = "C:\\Users\\jsmit\\Desktop\\WSU\\DataAnalytics\\STAT419\\WSU_STATS419_FALL2020\\project-measure\\";
+path.project = "C:\\Users\\jsmit\\Desktop\\WSU\\DataAnalytics\\STAT419\\
+WSU_STATS419_FALL2020\\project-measure\\";
 
 
 path.to.secret = "C:\\Users\\jsmit\\Desktop\\WSU\\DataAnalytics\\STAT419\\_SECRET_\\";
 
-measure = utils::read.csv( paste0(path.to.secret, "measure-students.txt"), header=TRUE, quote="", sep="|");
+measure = utils::read.csv( paste0(path.to.secret, "measure-students.txt"), 
+                           header=TRUE, quote="", sep="|");
 
-path.github = "https://github.com/jsmith0434/WSU_STATS419_FALL2020";
-source_url( paste0(path.github,"/functions/functions-project-measure.R") );
+path.github = "https://raw.githubusercontent.com/jsmith0434/WSU_STATS419_FALL2020";
+source_url( paste0(path.github,"/master/functions/functions-project.R") );
 
-measure_data = utils::read.csv( paste0(path.to.secret, "final.measure.txt"), header=TRUE, quote="", sep="|");
+measure_data = utils::read.csv( paste0(path.to.secret, "final.measure.txt"), 
+                                header=TRUE, quote="", sep="|");
 measure_cleaned = cleanUpData(measure_data)
 
 adults = measure_cleaned[measure_cleaned$age >= 18, ]
@@ -247,7 +223,7 @@ adults = measure_cleaned[measure_cleaned$age >= 18, ]
 ```
 
 
-Below is the code to generate the summary statistics and save them as a table that you see in Section \ref{}.
+Below is the code to generate the summary statistics and save them as the table that you see in Section \ref{}.
 
 ```{r,appendix-summary,message=FALSE, eval=FALSE}
 
@@ -255,7 +231,8 @@ Below is the code to generate the summary statistics and save them as a table th
 path.humanVerseWSU = "https://raw.githubusercontent.com/MonteShaffer/humanVerseWSU/"
 source_url( paste0(path.humanVerseWSU,"master/misc/functions-project-measure.R") );
 
-path.project = "C:\\Users\\jsmit\\Desktop\\WSU\\DataAnalytics\\STAT419\\WSU_STATS419_FALL2020\\project-measure\\";
+path.project = "C:\\Users\\jsmit\\Desktop\\WSU\\DataAnalytics\\STAT419\\
+WSU_STATS419_FALL2020\\project-measure\\";
 path.tables = paste0(path.project,"tables\\");
 
 file.correlation = paste0(path.tables,"height-head-correlation-table.tex");
@@ -272,19 +249,9 @@ buildLatexCorrelationTable(myData,
 
 Sys.sleep(2); # in case Knit-PDF doesn't like that I just created the file...
 
-myData2 = as.matrix(sub2)
-
-file.correlation = paste0(path.tables,"scaled-correlation-table.tex");
-
-buildLatexCorrelationTable(myData2, 
-  rotateTable = TRUE,
-  width.table = 1.6,
-  myFile = file.correlation,
-  myNames = c(colnames(sub2), colnames(sub2))
-)
-
-
 ```
+
+A pie chart showing the breakdown of participants by gender.
 
 ```{r}
 mytable2 <- table(adults$gender)
@@ -293,13 +260,15 @@ pie(mytable2, labels = lbls,  main="Respondent Gender")
 
 ```
 
+A pie chart showing ethnicity.
+
 ```{r}
 mytable <- round(prop.table(table(adults$ethnicity))*100,1)
 lbls <- paste(names(mytable), ": ", mytable, sep="")
 pie(mytable, labels = lbls,   main="Respondent Ethicity")
 ```
 
-
+Histograms that show the distribution of the percent deviation from the ideal standard head height to body height ratio proposed by Loomis.
 ```{r}
 sub = adults[, c("height", "head.height", "gender")]
 sub$eighth = sub$height/8 
@@ -309,6 +278,8 @@ hist(sub$percent_diff[sub$gender=="female"])
 hist(sub$percent_diff[sub$gender=="male"])
 hist(sub$percent_diff)
 ```
+
+The code used to generate the KMO score.
 
 ```{r, eval = FALSE}
 
@@ -327,6 +298,7 @@ my.kmo
 
 ```
 
+The code used to generate the large correlation table included in the appendix.
 
 ```{r,  eval = FALSE}
 myData2 = as.matrix(sub2)
@@ -341,3 +313,4 @@ buildLatexCorrelationTable(myData2,
 )
 
 ```
+

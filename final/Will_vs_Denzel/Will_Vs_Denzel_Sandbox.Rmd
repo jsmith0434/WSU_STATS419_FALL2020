@@ -1,0 +1,443 @@
+---
+title: 'R Notebook: Will v Denzel'
+output:
+  html_document:
+    df_print: paged
+    toc: true
+    toc_float: true
+    toc_depth: 5
+    fig_caption: true
+    number_sections: true 
+---
+
+```{r}
+
+library(devtools);
+
+library(humanVerseWSU);
+
+path.github = "https://raw.githubusercontent.com/MonteShaffer/humanVerseWSU/master/";
+
+include.me = paste0(path.github, "misc/functions-nlp.R");
+source_url( include.me );
+include.me = paste0(path.github, "misc/functions-nlp-str.R");
+source_url( include.me );
+include.me = paste0(path.github, "misc/functions-nlp-stack.R");
+source_url( include.me );
+include.me = paste0(path.github, "misc/functions-nlp-pos.R");
+source_url( include.me );
+
+include.me = paste0(path.github, "humanVerseWSU/R/functions-encryption.R");
+source_url( include.me );
+
+
+path.to.nascent = "C:/Users/Alexander Nevsky/Dropbox/WSU-419/Fall 2020/__student_access__/unit_02_confirmatory_data_analysis/nascent/";
+
+folder.nlp = "nlp/";
+path.to.nlp = paste0(path.to.nascent, folder.nlp);
+
+
+###### UPDATES TO dataframe subset function ######
+# inflation adjustments for NA ... and improvements on subsetting
+include.me = paste0(path.github, "humanVerseWSU/R/functions-dataframe.R");
+source_url( include.me );
+
+include.me = paste0(path.github, "humanVerseWSU/R/functions-inflation.R");
+source_url( include.me );
+
+```
+
+# (IMDB) Custom library
+
+```{r}
+library(devtools);
+#install_github("MonteShaffer/imdb/imdb"); # choose #3 to humanVerseWSU
+#detach(package:imdb);
+library(imdb);
+packageVersion("imdb");  # ‘0.1.1’
+# ?loadDataIMDB
+```
+
+## Load data
+
+```{r}
+imdb::loadDataIMDB();
+names(imdb.data);
+
+humanVerseWSU::loadInflationData();
+```
+
+ 
+### Cast
+```{r}
+will.nmid = "nm0000226";
+will.movies = IMDB.getMoviesForPerson(will.nmid);
+will.n = nrow(will.movies);
+will.cast = merge(will.movies[,c(1,3:5)], imdb.data$movies.df$cast, by="ttid");
+
+length(unique(will.cast$nmid));
+nrow(will.cast);
+will.cast;  # this merge will create about 111 x 15
+
+
+```
+
+
+
+```{r}
+will.nmid = "nm0000226";
+will.movies = IMDB.getMoviesForPerson(will.nmid);
+will.n = nrow(will.movies);
+
+
+denzel.nmid = "nm0000243";
+denzel.movies = IMDB.getMoviesForPerson(denzel.nmid);
+denzel.n = nrow(denzel.movies);
+```
+
+### Number of Movies
+
+#### Will
+```{r}
+will.n;
+will.ttids = will.movies$ttid;
+length( intersect(will.ttids, imdb.data$movies$all) );
+length( intersect(will.ttids, imdb.data$movies$top250) );
+length( intersect(will.ttids, imdb.data$movies$popular50$ttid) );
+length( intersect(will.ttids, imdb.data$movies$gem50$ttid) );
+```
+
+#### Denzel
+
+```{r}
+denzel.n;
+denzel.ttids = denzel.movies$ttid;
+length( intersect(denzel.ttids, imdb.data$movies$all) );
+length( intersect(denzel.ttids, imdb.data$movies$top250) );
+length( intersect(denzel.ttids, imdb.data$movies$popular50$ttid) );
+length( intersect(denzel.ttids, imdb.data$movies$gem50$ttid) );
+
+#intersect(denzel.ttids, will.ttids);  # interesting... https://www.imdb.com/title/tt1546668/fullcredits ... a movie about movies?
+```
+
+```{r}
+
+will.actor.info = imdb.data$all.actors.info[which(imdb.data$all.actors.info$nmid == will.nmid), ]
+denzel.actor.info = imdb.data$all.actors.info[which(imdb.data$all.actors.info$nmid == denzel.nmid), ]
+
+will.starmeter = will.actor.info$starmeter.rank
+denzel.starmeter = denzel.actor.info$starmeter.rank
+
+min(will.movies$year, na.rm = TRUE)
+min(denzel.movies$year, na.rm = TRUE)
+
+mean(will.movies$ratings, na.rm = TRUE) 
+mean(denzel.movies$ratings, na.rm = TRUE) 
+```
+
+
+
+```{r}
+
+rank.will = subsetDataFrame(imdb.data$all.movies.actors.characters, "nmid", "==", will.nmid);
+#will.merged = merge(will.movies[ ,c("ttid", "title", "ratings", "metacritic","millions")], rank.will, by="ttid", all.x = TRUE);
+will.merged = merge(will.movies[ ,c("ttid", "title", "year", "ratings", "metacritic","millions")], rank.will, by="ttid");
+will.final = will.merged[which(will.merged$actor.rank <= 3), ]
+
+
+rank.denzel = subsetDataFrame(imdb.data$all.movies.actors.characters, "nmid", "==", denzel.nmid);
+#will.merged = merge(will.movies[ ,c("ttid", "title", "ratings", "metacritic","millions")], rank.will, by="ttid", all.x = TRUE);
+denzel.merged = merge(denzel.movies[ ,c("ttid", "title", "year", "ratings", "metacritic","millions")], rank.denzel, by="ttid");
+denzel.final = denzel.merged[which(denzel.merged$actor.rank <= 3), ]
+
+```
+
+
+##Inflation conversion
+```{r}
+humanVerseWSU::loadInflationData();
+#denzel$movies.50 = standardizeDollarsInDataFrame(denzel$movies.50, 2000, "millions", "year", "millionsAdj");
+denzel.final = standardizeDollarsInDataFrame(denzel.final, 2020, "millions", "year", "millionsAdj");
+denzel.final;
+will.final = standardizeDollarsInDataFrame(will.final, 2020, "millions", "year", "millionsAdj");
+will.final;
+
+```
+
+##Will and Denzel Dataframe
+```{r}
+nmid = c(will.nmid, denzel.nmid)
+actor = c("Will Smith", "Denzel Washington")
+avg.ratings = c(mean(will.final$ratings, na.rm =TRUE), mean(denzel.final$ratings, na.rm =TRUE))
+avg.metacritic = c(mean(will.final$metacritic, na.rm =TRUE), mean(denzel.final$metacritic, na.rm =TRUE))
+#actor.rank = c(mean(will.final$actor.rank, na.rm =TRUE), mean(denzel.final$actor.rank, na.rm =TRUE))
+avg.box.office = c(mean(will.final$millionsAdj, na.rm =TRUE), mean(denzel.final$millionsAdj, na.rm =TRUE))
+leading.roles = c(nrow(will.final), nrow(denzel.final))
+star.meter = c(will.starmeter, denzel.starmeter)
+lead.ratio = c((nrow(will.final)/ will.n), (nrow(denzel.final)/ denzel.n) ) #ratio of leading roles to total number of movies
+
+means = data.frame(nmid, actor, leading.roles,lead.ratio, star.meter, avg.ratings, avg.metacritic, avg.box.office) 
+#shows the number of movies being considered (where each start ranked 1, 2, or 3, the average rating of those movies, the avg metacritic score, and the average box office earnings in 2020 dollars)
+means
+
+```
+
+
+##Popular movie pool
+```{r}
+#get a pool of the top 50 movies each year for the past 40 years
+df = subsetDataFrame(imdb.data$movies$popular50, "year", ">=", 1980);
+df = subsetDataFrame(df, "year", "<", 2020);
+ttids = df$ttid;
+#merge with the dataset that has the movie rating, metacritic score, and box office data
+df.movies = merge(df, imdb.data$all.actors.movies, by="ttid");
+
+#Adjust for inflation - convert box office sales to today's dollars
+df.movies  = standardizeDollarsInDataFrame(df.movies, 2020, "millions", "year.y", "millionsAdj");
+
+
+```
+
+
+## Calculate Zcores - Deprecated
+```{r z_scores}
+
+#Calculate the average rating, metacritic score, and box office sales for all the movies in the pool
+df.mean.rating = mean(df.movies$ratings, na.rm = TRUE)
+df.mean.metacritic = mean(df.movies$metacritic, na.rm =TRUE)
+df.mean.box.office = mean(df.movies$millionsAdj, na.rm =TRUE)
+#n = nrow(df.movies) #get the n
+
+#Calculate the average rating, metacritic score, and box office sales for all the movies in the pool
+df.sd.rating = sd(df.movies$ratings, na.rm = TRUE)
+df.sd.metacritic = sd(df.movies$metacritic, na.rm =TRUE)
+df.sd.box.office = sd(df.movies$millionsAdj, na.rm =TRUE)
+
+#Calculate the Z score 
+r = (means$ratings - df.mean.rating)/(df.sd.rating/means$movie.count)
+m = (means$metacritic - df.mean.metacritic)/(df.sd.metacritic/means$movie.count)
+b = (means$box.office - df.mean.box.office)/(df.sd.box.office/means$movie.count)
+
+zscores = data.frame(actor, r, m, b)
+colnames(zscores) <- c("actor","rating", "metacritic", "box.office")
+zscores
+
+```
+##Adjacency Matrix Functions
+```{r}
+#Create adjacency matrix
+
+matrixPower = function(M, times=1)
+  {
+  for(i in 1:times)
+    {
+    M = M %*% M;
+    }
+  M;
+  }
+
+eigenVectorRank = function(AB, method="super", compute="power", compute.iter=8)
+  {
+  nr = nrow(AB);  rn = rownames(AB);
+  nc = ncol(AB);  cn = colnames(AB);
+  result = list();
+  timings = list();
+  AA = BB = NULL;
+  print("Preparing matrices ... ");
+  timer.start = as.numeric(Sys.time());
+  if(nr != nc)
+    {
+    # let's do both ...
+    print("Analyzing both ... ");
+    AA = (AB) %*% t(AB);  # rows
+    BB = t(AB) %*% (AB);  # cols
+    } else { AA = AB; }
+  timer.end = as.numeric(Sys.time());
+  elapsed = round(timer.end - timer.start,2);
+  print(paste0("Time: ", elapsed, " secs"));
+  timings$prep = elapsed;
+  
+  ## AA
+  print("Computing AA ... rows");
+  timer.start = as.numeric(Sys.time());
+  rownames(AA) = colnames(AA) = rn;
+  # append supernode to END, easier
+  AA=rbind(AA,1);
+  AA=cbind(AA,1);
+  AA[(nr+1),(nr+1)] = 0;
+  diag(AA) = 0;  # nodes don't link to themselves ...
+  AAn = AA / rowSums(AA); # row normalize
+  AAnp = matrixPower(AAn, compute.iter);
+  
+  A.Rank = AAnp[1,-c((nr+1))]; # any row, less the supernode, which will have a very large value...
+  names(A.Rank) = rn;
+  A.Rank = sort((100*A.Rank/max(A.Rank)),decreasing=TRUE);
+  
+  A.Rank.df = as.data.frame( cbind( names(A.Rank), as.numeric(A.Rank) ));
+    colnames(A.Rank.df) = c("id", "eigenVectorRank");
+  A.Rank.df$eigenVectorRank = round(as.numeric(A.Rank.df$eigenVectorRank),2);
+  result$rows = A.Rank.df;
+  timer.end = as.numeric(Sys.time());
+  elapsed = round(timer.end - timer.start,2);
+  print(paste0("Time: ", elapsed, " secs"));
+  timings$rows = elapsed;
+  
+  if(!is.null(BB))
+  {
+  ## BB
+  print("Computing BB ... columns");
+  timer.start = as.numeric(Sys.time());  
+  rownames(BB) = colnames(BB) = cn;
+  # append supernode to END, easier
+  BB=rbind(BB,1);
+  BB=cbind(BB,1);
+  BB[(nr+1),(nr+1)] = 0;
+  diag(BB) = 0;  # nodes don't link to themselves ...
+  BBn = BB / rowSums(BB); # row normalize
+  BBnp = matrixPower(BBn, compute.iter);
+  
+  B.Rank = BBnp[1,-c((nr+1))]; # any row, less the supernode, which will have a very large value...
+  names(B.Rank) = cn;
+  B.Rank = sort((100*B.Rank/max(B.Rank)),decreasing=TRUE);
+  
+  B.Rank.df = as.data.frame( cbind( names(B.Rank), as.numeric(B.Rank) ));
+    colnames(B.Rank.df) = c("id", "eigenVectorRank");
+  B.Rank.df$eigenVectorRank = round(as.numeric(B.Rank.df$eigenVectorRank),2);
+  result$columns = B.Rank.df;
+  timer.end = as.numeric(Sys.time());
+  elapsed = round(timer.end - timer.start,2);
+  print(paste0("Time: ", elapsed, " secs"));
+  timings$columns = elapsed;
+  }
+  
+  result$timings = timings;
+  result;
+}
+
+
+```
+
+
+##Get 50 actors and build dataframe
+```{r}
+humanVerseWSU::loadInflationData();
+
+#this.path = path.to.nascent = "C:/Users/Alexander Nevsky/Dropbox/WSU-419/Fall 2020/__student_access__/unit_02_confirmatory_data_analysis/nascent/";
+#my.path = "C:\\Users\\jsmit\\Desktop\\WSU\\DataAnalytics\\STAT419\\WSU_STATS419_FALL2020\\final\\Will_vs_Denzel"
+#setwd(this.path);
+
+actorRank.modernEra = readRDS("actorRank2000.rds");
+
+id_list = c(will.nmid, denzel.nmid)
+i = 0
+fifty.means = means
+set.seed(123)
+
+while (i < 48) {
+  #Grab actors from the modern era 
+  nmid = sample(actorRank.modernEra$nmid, 1)
+  
+  if ((nmid %in% id_list) == FALSE) {
+    id_list = c(id_list, nmid)
+    temp.nmid = nmid
+    #Get actor name and starmeter
+    temp.actor.info = imdb.data$all.actors.info[which(imdb.data$all.actors.info$nmid == temp.nmid), ] 
+    actor = temp.actor.info$name
+    star.meter = temp.actor.info$starmeter.rank
+
+    #Get movies the actor has starred in
+    temp.movies = IMDB.getMoviesForPerson(temp.nmid);
+    temp.n = nrow(temp.movies); #Get total number of roles
+
+    # Get stats for those movies
+    rank.temp = subsetDataFrame(imdb.data$all.movies.actors.characters, "nmid", "==", temp.nmid);
+    temp.merged = merge(temp.movies[ ,c("ttid", "title", "year", "ratings", "metacritic","millions")], rank.temp, by="ttid");
+
+    #filter to keep only movies where the actor was a lead
+    temp.final = temp.merged[which(temp.merged$actor.rank <= 3), ]
+
+      #Make sure each actor has enough leading roles and movie stats to make a meaningful comparison
+      if (nrow(temp.final) > 10 && sum(is.na(temp.final$ratings)) < 10 && sum(is.na(temp.final$metacritic)) < 10  && sum(is.na(temp.final$millions)) < 10 ){
+      i = i + 1
+      #Adjust box office dollars for inflation
+      temp.final = standardizeDollarsInDataFrame(temp.final, 2020, "millions", "year", "millionsAdj");
+
+      #Get Averages and Stats
+      avg.ratings = mean(temp.final$ratings, na.rm =TRUE)
+      avg.metacritic = mean(temp.final$metacritic, na.rm =TRUE)
+      avg.box.office = mean(temp.final$millionsAdj, na.rm =TRUE)
+      leading.roles = nrow(temp.final) #number of leading roles
+      lead.ratio = (nrow(temp.final)/ temp.n) #ratio of leading roles to total number of movies
+
+      temp.means = data.frame(nmid, actor, leading.roles, lead.ratio, star.meter, avg.ratings, avg.metacritic, avg.box.office)
+      fifty.means = rbind(fifty.means, temp.means)
+      }
+     }
+  
+}
+
+
+#fifty.means$avg.metacritic <- gsub("NaN", NA, fifty.means$avg.metacritic)
+saveRDS(fifty.means, file = "fifty.means.RDS") 
+#fifty.means <- readRDS("fifty.means.RDS")
+fifty.means
+
+```
+
+###Scale data and build matrix
+```{r}
+#SCALE COLUMNS
+scaled.fifty.means =  readRDS("fifty.means.RDS")
+scaled.fifty.means$lead.ratio = scaled.fifty.means$lead.ratio/max(scaled.fifty.means$lead.ratio, na.rm = TRUE)
+scaled.fifty.means$avg.ratings = scaled.fifty.means$avg.ratings/max(scaled.fifty.means$avg.ratings, na.rm = TRUE)
+scaled.fifty.means$avg.metacritic = scaled.fifty.means$avg.metacritic/max(scaled.fifty.means$avg.metacritic, na.rm = TRUE)
+scaled.fifty.means$avg.box.office = scaled.fifty.means$avg.box.office/max(scaled.fifty.means$avg.box.office, na.rm = TRUE)
+
+#Star.meter doesn't look useful, so removing that, and the number of lead roles, and the actor names
+mat = as.matrix(scaled.fifty.means[, c(-1, -2, -3, -5)])
+rownames(mat) = scaled.fifty.means$actor
+mat
+
+#Ranks =   eigenVectorRank(mat)
+
+```
+##EigenVector Rank
+```{r}
+Ranks =  eigenVectorRank(mat) #Not currently working
+```
+
+##Igraph EigenRank
+```{r}
+
+library(igraph)
+
+mat.square = mat %*% t(mat)
+
+g <- graph.adjacency(mat.square, mode="directed", weighted=NULL)
+
+#plot.igraph(g.sub, edge.arrow.size=0.2)
+
+igraph_rank = eigen_centrality(g, directed = FALSE, scale = FALSE,
+  weights = NULL, options = arpack_defaults)
+
+will.final.rank = igraph_rank$vector[1]
+denzel.final.rank = igraph_rank$vector[2]
+
+results = data.frame(c(will.final.rank, denzel.final.rank))
+colnames(results) = c("eigen.rank")
+
+saveRDS(results, "tables/results.RDS")
+results
+
+```
+
+#Actor-Actor 200 results
+```{r}
+
+prof_results = actorRank.modernEra[which(actorRank.modernEra$nmid== will.nmid | actorRank.modernEra$nmid== denzel.nmid ), ]
+
+prof_results = prof_results[ , c(3,2)]
+
+prof_results
+```
+
